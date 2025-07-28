@@ -1,88 +1,65 @@
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MS D365 French Academy - Deviens Expert(e) en Automatisation Sans Coder</title>
-  <meta name="description" content="Formation certifiante 100% No-Code pour maîtriser Microsoft Power Platform, D365 et Copilot. Accessible à tous, même sans coder.">
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Mariam Sanoko - MS French Academy</title>
+  <style>
+    .sticky-menu {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      list-style: none;
+      padding: 1rem;
+      margin: 0;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      color: #333;
+      padding: 0.5rem 1rem;
+      transition: background 0.3s;
+    }
+    .nav-links a:hover {
+      background-color: #f0f0f0;
+      border-radius: 6px;
+    }
+  </style>
 </head>
 <body>
-  <nav class="sticky-menu">
+
+<header class="sticky-menu">
+  <nav>
     <ul class="nav-links">
-      <li><a href="#problems">Défis</a></li>
-      <li><a href="#solution">Solution</a></li>
-      <li><a href="#modules">Modules</a></li>
-      <li><a href="#pricing">Tarifs</a></li>
+      <li><a href="/">Accueil</a></li>
+      <li><a href="/formations.html">Formations</a></li>
+      <li><a href="/coach-ia.html">Coach IA</a></li>
+      <li><a href="/faq.html">FAQ</a></li>
+      <li><a href="/inscription.html">Inscription</a></li>
     </ul>
   </nav>
+</header>
 
-  <section class="hero">
-    <div class="container">
-      <h1>Deviens expert(e) en automatisation et CRM sans coder</h1>
-      <p class="subtitle">Grâce à la MS D365 French Academy et la puissance du No-Code</p>
-      <div class="stats">
-        <div class="stat"><span class="stat-number">15+</span><span>Modules</span></div>
-        <div class="stat"><span class="stat-number">40h</span><span>de Formation</span></div>
-        <div class="stat"><span class="stat-number">100%</span><span>Pratique</span></div>
-      </div>
-    </div>
+<main>
+  <!-- Contenu principal ici -->
+  <section style="padding: 4rem; text-align: center;">
+    <h1>Bienvenue sur MS French Academy</h1>
+    <p>Formations, IA No-Code, Coach IA, CRM et plus encore.</p>
   </section>
+</main>
 
-  <section class="video-container">
-    <div class="container">
-      <h2>Découvre ta formation en 2 minutes</h2>
-      <div style="max-width:800px; margin:auto;">
-        <iframe width="100%" height="450" src="https://www.youtube.com/embed/ID_DE_TA_VIDEO" 
-          title="Présentation MS D365 Academy" frameborder="0" allowfullscreen></iframe>
-      </div>
-      <p style="margin-top: 20px; color: #666;">Clique pour voir la présentation complète de l'académie</p>
-    </div>
-  </section>
+<footer style="text-align:center; padding:2rem; font-size:0.9rem; color:#777">
+  © 2025 Mariam Sanoko - Tous droits réservés.
+</footer>
 
-  <section class="problems" id="problems">
-    ...
-  </section>
-
-  <section class="solution" id="solution">
-    ...
-  </section>
-
-  <section class="modules" id="modules">
-    ...
-  </section>
-
-  <section class="pricing" id="pricing">
-    ...
-  </section>
-
-  <section class="cta">
-    ...
-  </section>
-
-  <footer style="background:#222; color:#fff; text-align:center; padding:40px 20px;">
-    <p>© 2025 MS D365 French Academy – Tous droits réservés</p>
-    <p><a href="/cgv" style="color:#aaa;">Conditions Générales de Vente</a> | <a href="/mentions-legales" style="color:#aaa;">Mentions Légales</a></p>
-  </footer>
-
-  <script>
-    function selectPlan(plan) {
-      const plans = {
-        'essentiel': { price: 29, name: 'Accès Essentiel' },
-        'complete': { price: 79, name: 'Formation Complète' },
-        'premium': { price: 199, name: 'Coaching Premium' }
-      };
-      const selectedPlan = plans[plan];
-      if (confirm(`Confirmer l'achat : ${selectedPlan.name} - ${selectedPlan.price}€`)) {
-        window.location.href = `https://buy.stripe.com/ton-lien-stripe?plan=${plan}`;
-      }
-    }
-
-    function scrollToPricing() {
-      document.querySelector('#pricing').scrollIntoView({ behavior: 'smooth' });
-    }
-  </script>
 </body>
 </html>
