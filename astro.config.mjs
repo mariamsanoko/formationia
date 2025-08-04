@@ -6,6 +6,6 @@ export default defineConfig({
   integrations: [react()],
   adapter: staticAdapter(),
   site: 'https://mariamsanoko.github.io/formationia',
-  base: '/formationia/',
+  base: '/formationia',
   output: 'static',
 });
