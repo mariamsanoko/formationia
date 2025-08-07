@@ -1,0 +1,16 @@
+{
+  "name": "formationia",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "astro": "^5.12.8",
+    "@astrojs/static": "^3.0.0",
+    "@astrojs/react": "^3.2.0"
+  }
+}
