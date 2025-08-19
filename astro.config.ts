@@ -23,7 +23,7 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
 
 export default defineConfig({
   site: 'https://www.mariamsanoko.fr',
-  base: 'formationia',
+  base: 'mariamsanoko/formationia',
 
   output: 'static',
 
