@@ -22,7 +22,7 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
-  site: 'https://formationia.github.io',
+  site: 'https://mariamsanoko.github.io',
   base: 'formationia',
 
   output: 'static',
