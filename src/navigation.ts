@@ -58,31 +58,31 @@ export const headerData = {
       ],
     },
     {
-      text: 'Landing',
+      text: 'Formations',
       links: [
         {
-          text: 'Lead Generation',
-          href: getPermalink('/landing/lead-generation'),
+          text: 'Airtable',
+          href: getPermalink('/formations/airtable'),
         },
         {
-          text: 'Long-form Sales',
-          href: getPermalink('/landing/sales'),
+          text: 'Power BI',
+          href: getPermalink('/formations/power-bi'),
         },
         {
-          text: 'Click-Through',
-          href: getPermalink('/landing/click-through'),
+          text: 'Make',
+          href: getPermalink('/formations/make'),
         },
         {
-          text: 'Product Details (or Services)',
-          href: getPermalink('/landing/product'),
+          text: 'Tally',
+          href: getPermalink('/formations/tally'),
         },
         {
-          text: 'Coming Soon or Pre-Launch',
-          href: getPermalink('/landing/pre-launch'),
+          text: 'Power Apps',
+          href: getPermalink('/formations/power-apps'),
         },
         {
-          text: 'Subscription',
-          href: getPermalink('/landing/subscription'),
+          text: 'Figma',
+          href: getPermalink('/formations/figma'),
         },
       ],
     },
