@@ -1,9 +1,15 @@
 
-import { createClient, supabaseUrl } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl: string = process.env.REACT_APP_SUPABASE_URL;
-const supabaseAnonKey: string = process.env.REACT_APP_ANON_KEY;
-
-const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKey);
-
-export default supabase;
+export const supabase = createClient(
+    import.meta.env.SUPABASE_URL,
+    import.meta.env.SUPABASE_ANON_KEY,
+    {
+        auth: {
+            flowType:"pkce",
+            autoRefreshToken:false,
+            detectSessionInUrl:false,
+            persistSession: true,
+        },
+    },
+);
