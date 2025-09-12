@@ -1,0 +1,15 @@
+---
+import { supabase } from "../lib/supabaseClient"
+
+let { data: session } = await supabase.auth.getSession()
+let userHasAccess = false
+
+if (session) {
+  const { data } = await supabase.from("user_courses").select().eq("user_id", session.user.id)
+  userHasAccess = data && data.length > 0
+}
+---
+{userHasAccess
+  ? <slot /> 
+  : <p>⚠️ Vous devez acheter la formation pour accéder au contenu.</p>
+}
