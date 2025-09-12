@@ -1,0 +1,9 @@
+---
+import { createCheckout } from "../lib/lemonClient"
+
+async function handleBuy() {
+  const url = await createCheckout()
+  window.location.href = url
+}
+---
+<button onclick="{handleBuy}"">Acheter cette formation</button>
