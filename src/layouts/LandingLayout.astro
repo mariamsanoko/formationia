@@ -13,17 +13,15 @@ const { metadata } = Astro.props;
 ---
 
 <PageLayout metadata={metadata}>
-  <Fragment slot="announcement">
-    <slot name="announcement" />
-  </Fragment>
-  <Fragment slot="header">
+
+  <Fragment slot="header"npm >
     <slot name="header">
       <Header
         links={headerData?.links[2] ? [headerData.links[2]] : undefined}
         actions={[
           {
-            text: 'Download',
-            href: 'https://github.com/arthelokyo/astrowind',
+            text: 'Get Started',
+            href: '#',
           },
         ]}
         showToggleTheme
