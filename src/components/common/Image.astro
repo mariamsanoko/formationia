@@ -38,15 +38,15 @@ if (!props.decoding) {
 }
 
 const _image = await findImage(props.src);
+const isRemoteImage =
+  typeof _image === 'string' && (_image.startsWith('http://') || _image.startsWith('https://'));
 
 let image: ImageType | undefined = undefined;
 
-if (
-  typeof _image === 'string' &&
-  (_image.startsWith('http://') || _image.startsWith('https://')) &&
-  isUnpicCompatible(_image)
-) {
+if (isRemoteImage && isUnpicCompatible(_image)) {
   image = await getImagesOptimized(_image, props, unpicOptimizer);
+} else if (isRemoteImage) {
+  image = await getImagesOptimized(_image, props);
 } else if (_image) {
   image = await getImagesOptimized(_image, props, astroAssetsOptimizer);
 }

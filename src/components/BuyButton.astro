@@ -1,9 +1,6 @@
----
-import { createCheckout } from "../lib/lemonClient"
-
-async function handleBuy() {
-  const url = await createCheckout()
-  window.location.href = url
-}
----
-<button onclick="{handleBuy}"">Acheter cette formation</button>
+<a
+  href="/pricing"
+  class="inline-flex rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
+>
+  Acheter cette formation
+</a>

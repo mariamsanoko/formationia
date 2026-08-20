@@ -1,12 +1,14 @@
 ---
 import { supabase } from "../lib/supabaseClient"
 
-let { data: session } = await supabase.auth.getSession()
+const {
+  data: { session },
+} = await supabase.auth.getSession()
 let userHasAccess = false
 
-if (session) {
+if (session?.user) {
   const { data } = await supabase.from("user_courses").select().eq("user_id", session.user.id)
-  userHasAccess = data && data.length > 0
+  userHasAccess = Boolean(data?.length)
 }
 ---
 {userHasAccess
