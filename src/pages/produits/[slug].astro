@@ -1,0 +1,230 @@
+---
+export const prerender = false;
+
+import Layout from '~/layouts/PageLayout.astro';
+
+const { slug } = Astro.params;
+
+// Données synchronisées avec ton catalogue
+const allItems: Record<string, any> = {
+    'pack-150-prompts-seo-copywriting': {
+        title: 'Pack 150+ Prompts Copywriting & SEO',
+        category: 'Bibliothèque de prompts',
+        description: 'Une suite complète de prompts conçus pour accélérer la production d\'articles, de posts LinkedIn et de landing pages haute conversion.',
+        price: '19,00 €',
+        priceId: 'price_1U7XsII2T1GqWW2unUTGz8M3',
+        image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80',
+        content: [
+            '30 Prompts de recherche d’angles éditoriaux et d’intention de recherche SEO.',
+            '40 Structures d’articles longs (1 500+ mots) optimisés SEO.',
+            '50 Modèles d’accroches et posts engageants pour LinkedIn et X.',
+            '30 Séquences d’emails marketing (onboarding, relance panier, ventes flash).',
+            'Espace Notion prêt à dupliquer avec catégorisation.',
+            'Guide PDF explicatif pour affiner les résultats sur ChatGPT & Claude.'
+        ]
+    },
+    'kit-prompts-midjourney-dalle': {
+        title: 'Kit Prompts Midjourney v6 & DALL-E',
+        category: 'Bibliothèque de prompts',
+        description: 'Générez des visuels professionnels, des photographies réalistes et des éléments de branding sans compétences en graphisme.',
+        price: '24,00 €',
+        priceId: 'price_1U7Y22I2T1GqWW2u84UrKWsv',
+        image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+        content: [
+            '50+ Styles artistiques et photographiques documentés avec exemples visuels.',
+            'Formules exactes pour les angles de caméra, types d’objectifs et éclairages.',
+            'Prompts spécifiques pour la création de mockups de produits 3D.',
+            'Templates de génération de logos vectoriels épurés.',
+            'Fiche mémo des paramètres avancés (--v 6.0, --stylize, --ar).'
+        ]
+    },
+    'pack-automatisation-make-airtable': {
+        title: 'Pack Automatisation Make & Airtable',
+        category: 'Bibliothèque de prompts',
+        description: 'Concevez vos logiques métier et résolvez vos blocages techniques sur vos outils No-Code préférés.',
+        price: '29,00 €',
+        priceId: 'price_1U7Y8zI2T1GqWW2uOzkQj7as',
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+        content: [
+            'Prompts pour générer des expressions régulières (Regex) sans erreur.',
+            'Générateur de schémas JSON et payloads personnalisés pour requêtes HTTP.',
+            'Formules complexes prêtes à l’emploi pour colonnes Airtable.',
+            'Blueprints Make.com réutilisables pour synchroniser Stripe, Airtable et Google Workspace.'
+        ]
+    },
+    'mega-bundle-ultime-ia': {
+        title: 'Méga-Bundle Ultime (500+ Prompts)',
+        category: 'Pack complet',
+        description: 'Accédez à l’intégralité de nos bibliothèques de prompts dans un tableau de bord Notion tout-en-un.',
+        price: '49,00 €',
+        priceId: 'price_1U7XsII2T1GqWW2unUTGz8M3',
+        image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80',
+        content: [
+            'L\'accès complet aux 3 bibliothèques : Copywriting, Midjourney et Automatisation.',
+            'Module bonus exclusif : 80 Prompts de prospection B2B et scripts de vente.',
+            'Espace Notion Master avec recherche globale et filtres.',
+            'Mises à jour mensuelles avec l’ajout des nouveaux prompts.'
+        ]
+    },
+    'tuto-agent-ia-n8n-openai': {
+        title: 'Tuto : Créer un Agent IA Autonome avec n8n & OpenAI',
+        category: 'Tutoriel vidéo',
+        description: 'Atelier vidéo complet de 1 h 45 min pour concevoir et héberger votre premier agent autonome connecté à vos outils.',
+        price: '29,00 €',
+        priceId: 'price_1U7Y22I2T1GqWW2u84UrKWsv',
+        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+        content: [
+            'Vidéo HD de 1 h 45 min accessible en streaming illimité.',
+            'Configuration pas à pas de l’instance n8n et sécurisation des clés API.',
+            'Gestion de la mémoire à long terme (Vector Store).',
+            'Fichier export JSON du workflow fourni pour import direct.'
+        ]
+    },
+    'tuto-automatisation-contenu-linkedin': {
+        title: 'Tuto : Automatiser la Création de Contenu LinkedIn',
+        category: 'Tutoriel vidéo',
+        description: 'Découvrez la méthode complète pour concevoir un flux automatisé de posts et carrousels engageants.',
+        price: '29,00 €',
+        priceId: 'price_1U7Y8zI2T1GqWW2uOzkQj7as',
+        image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=1200&q=80',
+        content: [
+            'Vidéo pratique de 1 h 15 min structurée par chapitres.',
+            'Mise en place de la base de veille et d’idées sur Airtable.',
+            'Connexion au webhook de génération visuelle automatique.',
+            'Programmation sans friction vers la file d’attente Buffer.'
+        ]
+    },
+    'formation-complete-prompt-engineering': {
+        title: 'Formation Complète : Prompt Engineering',
+        category: 'Formation complète',
+        description: 'Un programme structuré de 8 heures pour passer de simple utilisateur à consultant IA reconnu.',
+        price: '99,00 €',
+        priceId: 'price_1U7Y22I2T1GqWW2u84UrKWsv',
+        image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80',
+        content: [
+            '8 heures de formation vidéo découpées en 24 modules progressifs.',
+            'Ateliers pratiques avec études de cas réelles (e-commerce, agences, SaaS).',
+            'Accès au salon Discord privé pour poser vos questions aux intervenants.',
+            'Quiz de validation des acquis et certificat de complétion nominatif.'
+        ]
+    },
+    'bootcamp-nocode-pro': {
+        title: 'Bootcamp No-Code & Automatisation Pro',
+        category: 'Formation complète',
+        description: 'Construisez des applications web évolutives et mettez en place des flux de travail automatisés pour vos clients.',
+        price: '199,00 €',
+        priceId: 'price_1U7Y8zI2T1GqWW2uOzkQj7as',
+        image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
+        content: [
+            'Programme intensif avec plus de 15 heures de cours et projets guidés.',
+            'Création d’un espace membre, intégration de Stripe Checkout et gestion des webhooks.',
+            'Bibliothèque de composants et modèles de bases de données relationnelles.',
+            '2 Sessions de mentorat individuel en visio incluses.'
+        ]
+    }
+};
+
+const item = slug ? allItems[slug] : null;
+
+if (!item) {
+    return Astro.redirect('/catalog');
+}
+
+const metadata = {
+    title: item.title,
+};
+---
+
+<Layout metadata={metadata}>
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+        <a href="/catalog" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 hover:text-blue-800 dark:text-blue-400 mb-6 transition">
+            ← Retour au catalogue
+        </a>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden p-6 sm:p-10 shadow-lg">
+            <div class="relative h-64 sm:h-96 w-full overflow-hidden rounded-2xl mb-8">
+                <img src={item.image} alt={item.title} class="w-full h-full object-cover" />
+                <span class="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-sm text-white text-xs uppercase tracking-wider font-semibold px-3 py-1 rounded-md">
+          {item.category}
+        </span>
+            </div>
+
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 pb-8 border-b border-slate-100 dark:border-slate-800">
+                <div>
+                    <h1 class="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight">
+                        {item.title}
+                    </h1>
+                    <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm sm:text-base leading-relaxed">
+                        {item.description}
+                    </p>
+                </div>
+                <div class="shrink-0 bg-slate-50 dark:bg-slate-800/60 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 text-center md:text-right min-w-[200px]">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">Tarif unique</span>
+                    <span class="text-3xl font-black text-slate-900 dark:text-white block mb-4">{item.price}</span>
+                    <button
+                            type="button"
+                            data-price-id={item.priceId}
+                            class="stripe-checkout-btn w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition"
+                    >
+                        Acheter l'accès
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-900 dark:text-white mb-4">
+                    Ce qui est inclus dans cette ressource :
+                </h2>
+                <ul class="space-y-3.5">
+                    {item.content.map((point: string) => (
+                            <li class="flex items-start gap-3 text-sm sm:text-base text-slate-700 dark:text-slate-300">
+                                <span class="text-green-500 font-bold mt-0.5">✓</span>
+                                <span>{point}</span>
+                            </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function initSlugCheckout() {
+            document.querySelectorAll('.stripe-checkout-btn').forEach((btn) => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const target = e.currentTarget as HTMLButtonElement;
+                    const priceId = target.dataset.priceId;
+                    if (!priceId) return;
+
+                    const originalText = target.innerText;
+                    target.disabled = true;
+                    target.innerText = 'Redirection...';
+
+                    try {
+                        const res = await fetch('/api/create-checkout-session', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ priceId }),
+                        });
+                        const data = await res.json();
+                        if (data.url) {
+                            window.location.href = data.url;
+                        } else {
+                            alert(`Erreur : ${data.error || 'Impossible d’ouvrir la page de paiement.'}`);
+                            target.disabled = false;
+                            target.innerText = originalText;
+                        }
+                    } catch (err) {
+                        console.error('Erreur réseau :', err);
+                        alert('Une erreur réseau est survenue.');
+                        target.disabled = false;
+                        target.innerText = originalText;
+                    }
+                });
+            });
+        }
+
+        initSlugCheckout();
+        document.addEventListener('astro:page-load', initSlugCheckout);
+    </script>
+</Layout>

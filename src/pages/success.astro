@@ -1,0 +1,167 @@
+---
+export const prerender = false;
+
+import Layout from '~/layouts/PageLayout.astro';
+import { stripeClient } from '../lib/stripeClient.js';
+
+const metadata = {
+    title: 'Commande Confirmée — Vos Accès',
+};
+
+// Récupération de l'ID de session Stripe dans l'URL
+const sessionId = Astro.url.searchParams.get('session_id');
+
+if (!sessionId) {
+    return Astro.redirect('/catalog');
+}
+
+let session = null;
+let error = null;
+
+// Base de données des ressources sécurisées associées aux Price IDs Stripe
+const productDownloads: Record<string, { title: string; type: string; links: { name: string; url: string; icon: string }[] }> = {
+    'price_1U7XsII2T1GqWW2unUTGz8M3': {
+        title: 'Pack 150+ Prompts Copywriting & SEO',
+        type: 'Bibliothèque de Prompts',
+        links: [
+            { name: 'Dupliquer le Template Notion', url: 'https://notion.so/votre-template-prompts-seo', icon: '📝' },
+            { name: 'Télécharger le Guide PDF (Méthodes & Astuces)', url: '/downloads/guide-prompts-seo.pdf', icon: '📥' },
+        ],
+    },
+    'price_1U7Y22I2T1GqWW2u84UrKWsv': {
+        title: 'Kit Prompts Midjourney v6 & DALL-E',
+        type: 'Bibliothèque Visuelle',
+        links: [
+            { name: 'Accéder à la Galerie Notion & Prompts', url: 'https://notion.so/votre-kit-midjourney', icon: '🎨' },
+            { name: 'Télécharger l\'Aide-Mémoire Paramètres PDF', url: '/downloads/cheat-sheet-midjourney.pdf', icon: '📥' },
+        ],
+    },
+    'price_1U7Y8zI2T1GqWW2uOzkQj7as': {
+        title: 'Pack Automatisation Make & Airtable',
+        type: 'Ressources No-Code',
+        links: [
+            { name: 'Espace Notion & Formules Airtable', url: 'https://notion.so/votre-pack-automation', icon: '⚡' },
+            { name: 'Télécharger les Blueprints JSON Make.com', url: '/downloads/make-blueprints.zip', icon: '📦' },
+        ],
+    },
+};
+
+let purchasedProduct = null;
+
+try {
+    // Récupération et vérification de la session auprès de Stripe
+    session = await stripeClient.checkout.sessions.retrieve(sessionId, {
+        expand: ['line_items'],
+    });
+
+    // Vérification de l'état du paiement
+    if (session.payment_status !== 'paid') {
+        error = "Le paiement n'a pas encore été validé par votre banque.";
+    } else {
+        // Identification du tarif payé
+        const priceId = session.line_items?.data[0]?.price?.id;
+        if (priceId && productDownloads[priceId]) {
+            purchasedProduct = productDownloads[priceId];
+        }
+    }
+} catch (err: any) {
+    console.error('Erreur vérification session Stripe :', err);
+    error = 'Impossible de vérifier la validité de la commande.';
+}
+---
+
+<Layout metadata={metadata}>
+    <section class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
+        {error ? (
+                <div class="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-3xl p-8 text-center">
+                    <span class="text-4xl block mb-3">⚠️</span>
+                    <h1 class="text-2xl font-bold text-red-900 dark:text-red-300 mb-2">Un problème est survenu</h1>
+                    <p class="text-sm text-red-700 dark:text-red-400 mb-6">{error}</p>
+                    <a
+                            href="/catalog"
+                            class="inline-flex items-center px-5 py-2.5 rounded-xl text-xs font-semibold bg-red-600 hover:bg-red-700 text-white transition"
+                    >
+                        Retourner au catalogue
+                    </a>
+                </div>
+        ) : (
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-xl text-center">
+                    <!-- Badge Succès -->
+                    <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
+                        ✓
+                    </div>
+
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
+          Paiement Confirmé
+        </span>
+                    <h1 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-3">
+                        Merci pour votre commande !
+                    </h1>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto mb-8">
+                        Un récapitulatif a été envoyé à l'adresse <strong>{session?.customer_details?.email}</strong>.
+                    </p>
+
+                    <!-- Zone de Téléchargement des Accès -->
+                    <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-2xl p-6 text-left mb-8">
+                        <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-700 mb-6">
+                            <div>
+                                <span class="text-xs text-slate-400 block">{purchasedProduct?.type || 'Commande'}</span>
+                                <h2 class="text-lg font-bold text-slate-900 dark:text-white">
+                                    {purchasedProduct?.title || 'Votre ressource numérique'}
+                                </h2>
+                            </div>
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300">
+              Prêt
+            </span>
+                        </div>
+
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+                            Vos Liens d'Accès & Téléchargements :
+                        </h3>
+
+                        <div class="space-y-3">
+                            {purchasedProduct ? (
+                                purchasedProduct.links.map((link) => (
+                                        <a
+                                                href={link.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="flex items-center justify-between p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-md transition group"
+                                        >
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-2xl">{link.icon}</span>
+                                                <span class="text-sm font-semibold text-slate-800 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">
+                      {link.name}
+                    </span>
+                                            </div>
+                                            <span class="text-blue-600 dark:text-blue-400 font-bold text-sm">Ouvrir ↗</span>
+                                        </a>
+                                ))
+                            ) : (
+                                    <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                                        <p class="text-xs text-slate-600 dark:text-slate-400">
+                                            Votre lien vous sera transmis directement par email ou est accessible depuis votre espace membre.
+                                        </p>
+                                    </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <a
+                                href="/catalog"
+                                class="w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition"
+                        >
+                            ← Retourner à la boutique
+                        </a>
+                        <a
+                                href="/"
+                                class="w-full sm:w-auto px-6 py-3 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white transition"
+                        >
+                            Aller à l'accueil
+                        </a>
+                    </div>
+                </div>
+        )}
+    </section>
+</Layout>

@@ -10,8 +10,6 @@ const DEFAULT_PORTS = {
   'https:': 443
 }
 
-let experimentalWarned = false
-
 class EnvHttpProxyAgent extends DispatcherBase {
   #noProxyValue = null
   #noProxyEntries = null
@@ -20,13 +18,6 @@ class EnvHttpProxyAgent extends DispatcherBase {
   constructor (opts = {}) {
     super()
     this.#opts = opts
-
-    if (!experimentalWarned) {
-      experimentalWarned = true
-      process.emitWarning('EnvHttpProxyAgent is experimental, expect them to change at any time.', {
-        code: 'UNDICI-EHPA'
-      })
-    }
 
     const { httpProxy, httpsProxy, noProxy, ...agentOpts } = opts
 
@@ -55,32 +46,29 @@ class EnvHttpProxyAgent extends DispatcherBase {
     return agent.dispatch(opts, handler)
   }
 
-  async [kClose] () {
-    await this[kNoProxyAgent].close()
-    if (!this[kHttpProxyAgent][kClosed]) {
-      await this[kHttpProxyAgent].close()
-    }
-    if (!this[kHttpsProxyAgent][kClosed]) {
-      await this[kHttpsProxyAgent].close()
-    }
+  [kClose] () {
+    return Promise.all([
+      this[kNoProxyAgent].close(),
+      !this[kHttpProxyAgent][kClosed] && this[kHttpProxyAgent].close(),
+      !this[kHttpsProxyAgent][kClosed] && this[kHttpsProxyAgent].close()
+    ])
   }
 
-  async [kDestroy] (err) {
-    await this[kNoProxyAgent].destroy(err)
-    if (!this[kHttpProxyAgent][kDestroyed]) {
-      await this[kHttpProxyAgent].destroy(err)
-    }
-    if (!this[kHttpsProxyAgent][kDestroyed]) {
-      await this[kHttpsProxyAgent].destroy(err)
-    }
+  [kDestroy] (err) {
+    return Promise.all([
+      this[kNoProxyAgent].destroy(err),
+      !this[kHttpProxyAgent][kDestroyed] && this[kHttpProxyAgent].destroy(err),
+      !this[kHttpsProxyAgent][kDestroyed] && this[kHttpsProxyAgent].destroy(err)
+    ])
   }
 
   #getProxyAgentForUrl (url) {
     let { protocol, host: hostname, port } = url
 
-    // Stripping ports in this way instead of using parsedUrl.hostname to make
-    // sure that the brackets around IPv6 addresses are kept.
-    hostname = hostname.replace(/:\d*$/, '').toLowerCase()
+    // Remove the port suffix (e.g. ":8080") and then strip surrounding
+    // brackets from IPv6 literals (e.g. "[::1]" -> "::1") so that the
+    // result matches the unbracketed form stored by #parseNoProxy.
+    hostname = hostname.replace(/:\d*$/, '').replace(/^\[(.+)\]$/, '$1').toLowerCase()
     port = Number.parseInt(port, 10) || DEFAULT_PORTS[protocol] || 0
     if (!this.#shouldProxy(hostname, port)) {
       return this[kNoProxyAgent]
@@ -108,16 +96,14 @@ class EnvHttpProxyAgent extends DispatcherBase {
       if (entry.port && entry.port !== port) {
         continue // Skip if ports don't match.
       }
-      if (!/^[.*]/.test(entry.hostname)) {
-        // No wildcards, so don't proxy only if there is not an exact match.
-        if (hostname === entry.hostname) {
-          return false
-        }
-      } else {
-        // Don't proxy if the hostname ends with the no_proxy host.
-        if (hostname.endsWith(entry.hostname.replace(/^\*/, ''))) {
-          return false
-        }
+      // Don't proxy if the hostname is equal with the no_proxy host.
+      if (hostname === entry.hostname) {
+        return false
+      }
+      // Don't proxy if the hostname is the subdomain of the no_proxy host.
+      // Reference - https://github.com/denoland/deno/blob/6fbce91e40cc07fc6da74068e5cc56fdd40f7b4c/ext/fetch/proxy.rs#L485
+      if (hostname.slice(-(entry.hostname.length + 1)) === `.${entry.hostname}`) {
+        return false
       }
     }
 
@@ -134,10 +120,32 @@ class EnvHttpProxyAgent extends DispatcherBase {
       if (!entry) {
         continue
       }
-      const parsed = entry.match(/^(.+):(\d+)$/)
+
+      // An IPv6 entry with a port must be bracketed: [::1]:443.
+      // A bare IPv6 address like ::1 contains colons that must not be
+      // confused with a host:port separator, so we handle it separately.
+      let hostname, port
+      const ipv6WithPort = entry.match(/^\[(.+)\]:(\d+)$/)
+      if (ipv6WithPort) {
+        hostname = ipv6WithPort[1]
+        port = Number.parseInt(ipv6WithPort[2], 10)
+      } else {
+        // Bracketed IPv6 without port, or plain hostname[:port], or bare IPv6.
+        // Strip optional brackets first.
+        const unbracketed = entry.replace(/^\[(.+)\]$/, '$1')
+        // A bare IPv6 address contains multiple colons; a hostname:port entry
+        // has exactly one colon followed by digits. Only attempt host:port
+        // splitting when that is unambiguously the case.
+        const colonCount = (unbracketed.match(/:/g) || []).length
+        const parsed = colonCount === 1 && unbracketed.match(/^(.+):(\d+)$/)
+        hostname = parsed ? parsed[1] : unbracketed
+        port = parsed ? Number.parseInt(parsed[2], 10) : 0
+      }
+
       noProxyEntries.push({
-        hostname: (parsed ? parsed[1] : entry).toLowerCase(),
-        port: parsed ? Number.parseInt(parsed[2], 10) : 0
+        // strip leading dot or asterisk with dot
+        hostname: hostname.replace(/^\*?\./, '').toLowerCase(),
+        port
       })
     }
 

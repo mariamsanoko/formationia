@@ -7,10 +7,16 @@ const {
   kDefaultHeaders,
   kDefaultTrailers,
   kContentLength,
-  kMockDispatch
+  kMockDispatch,
+  kIgnoreTrailingSlash
 } = require('./mock-symbols')
 const { InvalidArgumentError } = require('../core/errors')
-const { buildURL } = require('../core/util')
+const { serializePathWithQuery } = require('../core/util')
+const {
+  types: {
+    isPromise
+  }
+} = require('node:util')
 
 /**
  * Defines the scope API for an interceptor reply
@@ -72,7 +78,7 @@ class MockInterceptor {
     // fragments to servers when they retrieve a document,
     if (typeof opts.path === 'string') {
       if (opts.query) {
-        opts.path = buildURL(opts.path, opts.query)
+        opts.path = serializePathWithQuery(opts.path, opts.query)
       } else {
         // Matches https://github.com/nodejs/undici/blob/main/lib/web/fetch/index.js#L1811
         const parsedURL = new URL(opts.path, 'data://')
@@ -85,6 +91,7 @@ class MockInterceptor {
 
     this[kDispatchKey] = buildKey(opts)
     this[kDispatches] = mockDispatches
+    this[kIgnoreTrailingSlash] = opts.ignoreTrailingSlash ?? false
     this[kDefaultHeaders] = {}
     this[kDefaultTrailers] = {}
     this[kContentLength] = false
@@ -115,13 +122,9 @@ class MockInterceptor {
     // Values of reply aren't available right now as they
     // can only be available when the reply callback is invoked.
     if (typeof replyOptionsCallbackOrStatusCode === 'function') {
-      // We'll first wrap the provided callback in another function,
-      // this function will properly resolve the data from the callback
-      // when invoked.
-      const wrappedDefaultsCallback = (opts) => {
-        // Our reply options callback contains the parameter for statusCode, data and options.
-        const resolvedData = replyOptionsCallbackOrStatusCode(opts)
-
+      // Resolves the data returned by a reply options callback into
+      // dispatch data, validating its format along the way.
+      const resolveReplyCallbackData = (resolvedData) => {
         // Check if it is in the right format
         if (typeof resolvedData !== 'object' || resolvedData === null) {
           throw new InvalidArgumentError('reply options callback must return an object')
@@ -136,8 +139,25 @@ class MockInterceptor {
         }
       }
 
+      // We'll first wrap the provided callback in another function,
+      // this function will properly resolve the data from the callback
+      // when invoked.
+      const wrappedDefaultsCallback = (opts) => {
+        // Our reply options callback contains the parameter for statusCode, data and options.
+        const resolvedData = replyOptionsCallbackOrStatusCode(opts)
+
+        // An asynchronous reply options callback resolves to the reply
+        // parameters, so the dispatch data can only be resolved once the
+        // returned promise settles.
+        if (isPromise(resolvedData)) {
+          return resolvedData.then(resolveReplyCallbackData)
+        }
+
+        return resolveReplyCallbackData(resolvedData)
+      }
+
       // Add usual dispatch data, but this time set the data parameter to function that will eventually provide data.
-      const newMockDispatch = addMockDispatch(this[kDispatches], this[kDispatchKey], wrappedDefaultsCallback)
+      const newMockDispatch = addMockDispatch(this[kDispatches], this[kDispatchKey], wrappedDefaultsCallback, { ignoreTrailingSlash: this[kIgnoreTrailingSlash] })
       return new MockScope(newMockDispatch)
     }
 
@@ -154,7 +174,7 @@ class MockInterceptor {
 
     // Send in-already provided data like usual
     const dispatchData = this.createMockScopeDispatchData(replyParameters)
-    const newMockDispatch = addMockDispatch(this[kDispatches], this[kDispatchKey], dispatchData)
+    const newMockDispatch = addMockDispatch(this[kDispatches], this[kDispatchKey], dispatchData, { ignoreTrailingSlash: this[kIgnoreTrailingSlash] })
     return new MockScope(newMockDispatch)
   }
 
@@ -166,7 +186,7 @@ class MockInterceptor {
       throw new InvalidArgumentError('error must be defined')
     }
 
-    const newMockDispatch = addMockDispatch(this[kDispatches], this[kDispatchKey], { error })
+    const newMockDispatch = addMockDispatch(this[kDispatches], this[kDispatchKey], { error }, { ignoreTrailingSlash: this[kIgnoreTrailingSlash] })
     return new MockScope(newMockDispatch)
   }
 

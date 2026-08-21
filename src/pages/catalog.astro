@@ -1,0 +1,426 @@
+---
+export const prerender = false;
+
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+
+const metadata = {
+    title: 'Catalogue — Prompts IA, Tutos Vidéos & Formations',
+};
+
+// 1. Packs de Prompts IA
+const promptPacks = [
+    {
+        id: 'prompt_1',
+        slug: 'pack-150-prompts-seo-copywriting',
+        name: 'Pack 150+ Prompts Copywriting & SEO',
+        description: 'Rédige des articles optimisés, des posts LinkedIn et des pages de vente persuasives.',
+        price: '19,00 €',
+        priceId: 'price_1U7ehwI2T1GqWW2uzzJoUb9H',
+        badge: 'Best-Seller',
+        image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80',
+        highlights: ['ChatGPT & Claude 3.5', 'Frameworks AIDA & PAS', 'Accès Notion + PDF'],
+    },
+    {
+        id: 'prompt_2',
+        slug: 'kit-prompts-midjourney-dalle',
+        name: 'Kit Prompts Midjourney v6 & DALL-E',
+        description: 'Styles visuels, rendus photoréalistes, logos vectoriels et mockups de marque.',
+        price: '24,00 €',
+        priceId: 'price_1U7epEI2T1GqWW2uCPeGqZKZ',
+        badge: 'Créatif',
+        image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+        highlights: ['50+ styles graphiques', 'Rendus optimisés', 'Guide PDF pas à pas'],
+    },
+    {
+        id: 'prompt_3',
+        slug: 'pack-automatisation-make-airtable',
+        name: 'Pack Automatisation Make & Airtable',
+        description: 'Prompts système pour générer des scripts JSON, des expressions regex et bases de données.',
+        price: '29,00 €',
+        priceId: 'price_1U7Y8zI2T1GqWW2uOzkQj7as',
+        badge: 'Productivité',
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+        highlights: ['Génération JSON / regex', 'Workflows Make guidés', 'Templates Airtable'],
+    },
+    {
+        id: 'prompt_4',
+        slug: 'mega-bundle-ultime-ia',
+        name: 'Méga-Bundle Ultime (500+ Prompts)',
+        description: 'L\'intégrale : Rédaction, Image, Automatisation, Business et Prospection B2B.',
+        price: '49,00 €',
+        priceId: 'price_1U7XsII2T1GqWW2unUTGz8M3',
+        badge: 'Complet',
+        image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80',
+        highlights: ['Tous les packs inclus', 'Templates de gestion Notion', 'Mises à jour mensuelles'],
+    },
+];
+
+// 2. Tutos Vidéos
+const videoTutorials = [
+    {
+        id: 'video_1',
+        slug: 'tuto-agent-ia-n8n-openai',
+        title: 'Créer un Agent IA Autonome avec n8n & OpenAI',
+        description: 'Configure de A à Z un bot capable de répondre à tes emails et mettre à jour ton CRM.',
+        duration: '1 h 45 min',
+        level: 'Intermédiaire',
+        price: '29,00 €',
+        priceId: 'price_1U7Y22I2T1GqWW2u84UrKWsv',
+        image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80',
+        topics: ['Connexion API', 'Gestion de la mémoire', 'Fichier JSON inclus'],
+    },
+    {
+        id: 'video_2',
+        slug: 'tuto-automatisation-contenu-linkedin',
+        title: 'Automatiser la Création de Contenu LinkedIn',
+        description: 'Pipeline complet pour générer, planifier et publier des carrousels sans effort.',
+        duration: '1 h 15 min',
+        level: 'Débutant',
+        price: '29,00 €',
+        priceId: 'price_1U7Y8zI2T1GqWW2uOzkQj7as',
+        image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80',
+        topics: ['Make.com + Airtable', 'Génération image IA', 'Planificateur Buffer'],
+    },
+];
+
+// 3. Formations complètes
+const courses = [
+    {
+        id: 'course_1',
+        slug: 'formation-complete-prompt-engineering',
+        name: 'Formation Complète : Prompt Engineering',
+        description: 'Maîtrise les LLM, l’ingénierie de prompts et le fine-tuning appliqué aux entreprises.',
+        price: '99,00 €',
+        priceId: 'price_1U7Y22I2T1GqWW2u84UrKWsv',
+        image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80',
+        features: ['8 heures de vidéos', 'Exercices pratiques', 'Certification officielle'],
+    },
+    {
+        id: 'course_2',
+        slug: 'bootcamp-nocode-pro',
+        name: 'Bootcamp No-Code & Automatisation Pro',
+        description: 'Crée des architectures web robustes sans code et automatise des processus métiers complets.',
+        price: '199,00 €',
+        priceId: 'price_1U7Y8zI2T1GqWW2uOzkQj7as',
+        image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+        features: ['5 projets concrets', 'Templates Make & Airtable', 'Accès direct formateur'],
+    },
+];
+---
+
+<Layout metadata={metadata}>
+    <!-- En-tête Hero -->
+    <HeroText
+            tagline="Catalogue & Ressources"
+            title="Prompts, Tutos & Formations"
+            subtitle="Des outils immédiatement actionnables pour décupler votre productivité avec l'IA et le No-Code."
+    />
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+
+        <!-- BARRE DE NAVIGATION D'ONGLETS / FILTRES -->
+        <div class="flex items-center justify-center gap-2 mb-16 overflow-x-auto py-2">
+            <a href="#prompts" class="px-5 py-2.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/40 dark:text-blue-300 transition">
+                ⚡ Bibliothèques de Prompts
+            </a>
+            <a href="#tutos" class="px-5 py-2.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 hover:bg-purple-100 dark:bg-purple-900/40 dark:text-purple-300 transition">
+                🎬 Tutos Vidéos
+            </a>
+            <a href="#formations" class="px-5 py-2.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300 transition">
+                🎓 Formations Complètes
+            </a>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- SECTION 1 : PACKS DE PROMPTS                              -->
+        <!-- ========================================================= -->
+        <section id="prompts" class="mb-24 scroll-mt-24">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 mb-2">
+            Bibliothèques
+          </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                        Packs de Prompts IA
+                    </h2>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 sm:mt-0 max-w-sm">
+                    Fichiers Notion & PDF téléchargeables immédiatement après achat.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {promptPacks.map((pack) => (
+                        <div class="group flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
+                            <!-- Image avec badge -->
+                            <div class="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                <img
+                                        src={pack.image}
+                                        alt={pack.name}
+                                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                        loading="lazy"
+                                />
+                                {pack.badge && (
+                                        <span class="absolute top-3 right-3 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                  {pack.badge}
+                </span>
+                                )}
+                            </div>
+
+                            <!-- Contenu -->
+                            <div class="p-6 flex-1 flex flex-col">
+                                <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 leading-snug">
+                                    {pack.name}
+                                </h3>
+                                <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 flex-1 leading-relaxed">
+                                    {pack.description}
+                                </p>
+
+                                <!-- Points clés -->
+                                <ul class="space-y-1.5 mb-6 text-xs text-slate-600 dark:text-slate-300 border-t border-slate-100 dark:border-slate-800/80 pt-4">
+                                    {pack.highlights.map((item) => (
+                                            <li class="flex items-center gap-2">
+                                                <span class="text-blue-500 font-bold">✓</span>
+                                                <span>{item}</span>
+                                            </li>
+                                    ))}
+                                </ul>
+
+                                <!-- Prix et boutons -->
+                                <div class="pt-4 border-t border-slate-100 dark:border-slate-800/80 mt-auto">
+                                    <div class="flex items-baseline justify-between mb-4">
+                                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Tarif unique</span>
+                                        <span class="text-2xl font-black text-slate-900 dark:text-white">{pack.price}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <a
+                                                href={`/produits/${pack.slug}`}
+                                                class="inline-flex items-center justify-center px-3 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition"
+                                        >
+                                            Visualiser
+                                        </a>
+                                        <button
+                                                type="button"
+                                                data-price-id={pack.priceId}
+                                                class="stripe-checkout-btn inline-flex items-center justify-center px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow transition"
+                                        >
+                                            Acheter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                ))}
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SECTION 2 : TUTOS VIDÉOS                                  -->
+        <!-- ========================================================= -->
+        <section id="tutos" class="mb-24 scroll-mt-24">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 mb-2">
+            Ateliers Pratiques
+          </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                        Tutos Vidéos & Masterclasses
+                    </h2>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 sm:mt-0 max-w-sm">
+                    Des tutoriels guidés avec fichiers sources et modèles JSON fournis.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {videoTutorials.map((tuto) => (
+                        <div class="group flex flex-col sm:flex-row bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
+                            <!-- Image / Durée -->
+                            <div class="sm:w-2/5 h-56 sm:h-auto relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                <img
+                                        src={tuto.image}
+                                        alt={tuto.title}
+                                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                        loading="lazy"
+                                />
+                                <div class="absolute bottom-3 left-3 flex flex-wrap gap-1.5">
+                <span class="bg-black/75 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-lg font-medium">
+                  ⏱ {tuto.duration}
+                </span>
+                                    <span class="bg-purple-600/90 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-lg font-medium">
+                  {tuto.level}
+                </span>
+                                </div>
+                            </div>
+
+                            <!-- Détails -->
+                            <div class="p-6 sm:w-3/5 flex flex-col justify-between">
+                                <div>
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 leading-snug">
+                                        {tuto.title}
+                                    </h3>
+                                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                                        {tuto.description}
+                                    </p>
+
+                                    <ul class="space-y-1 mb-6 text-xs text-slate-600 dark:text-slate-300">
+                                        {tuto.topics.map((topic) => (
+                                                <li class="flex items-center gap-2">
+                                                    <span class="text-purple-500 font-bold">▶</span>
+                                                    <span>{topic}</span>
+                                                </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div class="pt-4 border-t border-slate-100 dark:border-slate-800/80">
+                                    <div class="flex items-baseline justify-between mb-4">
+                                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Accès illimité</span>
+                                        <span class="text-2xl font-black text-slate-900 dark:text-white">{tuto.price}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <a
+                                                href={`/produits/${tuto.slug}`}
+                                                class="inline-flex items-center justify-center px-3 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition"
+                                        >
+                                            Visualiser
+                                        </a>
+                                        <button
+                                                type="button"
+                                                data-price-id={tuto.priceId}
+                                                class="stripe-checkout-btn inline-flex items-center justify-center px-3 py-2.5 rounded-xl text-xs font-semibold bg-purple-600 hover:bg-purple-700 text-white shadow-sm hover:shadow transition"
+                                        >
+                                            Acheter le tuto
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                ))}
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SECTION 3 : FORMATIONS COMPLÈTES                          -->
+        <!-- ========================================================= -->
+        <section id="formations" class="mb-12 scroll-mt-24">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 mb-2">
+            Cursus Complets
+          </span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                        Formations & Accompagnement
+                    </h2>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 sm:mt-0 max-w-sm">
+                    Formations approfondies avec accompagnement et certification.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {courses.map((course) => (
+                        <div class="group flex flex-col sm:flex-row bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition duration-300">
+                            <div class="sm:w-2/5 h-56 sm:h-auto relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                <img
+                                        src={course.image}
+                                        alt={course.name}
+                                        class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                        loading="lazy"
+                                />
+                            </div>
+
+                            <div class="p-6 sm:w-3/5 flex flex-col justify-between">
+                                <div>
+                                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2 leading-snug">
+                                        {course.name}
+                                    </h3>
+                                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                                        {course.description}
+                                    </p>
+
+                                    <ul class="space-y-1.5 mb-6 text-xs text-slate-600 dark:text-slate-300">
+                                        {course.features.map((feature) => (
+                                                <li class="flex items-center gap-2">
+                                                    <span class="text-emerald-500 font-bold">✓</span>
+                                                    <span>{feature}</span>
+                                                </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div class="pt-4 border-t border-slate-100 dark:border-slate-800/80">
+                                    <div class="flex items-baseline justify-between mb-4">
+                                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Programme complet</span>
+                                        <span class="text-2xl font-black text-slate-900 dark:text-white">{course.price}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <a
+                                                href={`/produits/${course.slug}`}
+                                                class="inline-flex items-center justify-center px-3 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition"
+                                        >
+                                            Visualiser
+                                        </a>
+                                        <button
+                                                type="button"
+                                                data-price-id={course.priceId}
+                                                class="stripe-checkout-btn inline-flex items-center justify-center px-3 py-2.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm hover:shadow transition"
+                                        >
+                                            Commander
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                ))}
+            </div>
+        </section>
+
+    </div>
+
+    <!-- SCRIPT CHECKOUT STRIPE -->
+    <script>
+        function initCheckout() {
+            document.querySelectorAll('.stripe-checkout-btn').forEach((btn) => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const target = e.currentTarget as HTMLButtonElement;
+                    const priceId = target.dataset.priceId;
+                    if (!priceId) return;
+
+                    const originalText = target.innerText;
+                    target.disabled = true;
+                    target.innerText = 'Redirection...';
+
+                    try {
+                        const res = await fetch('/api/create-checkout-session', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ priceId }),
+                        });
+                        const data = await res.json();
+                        if (data.url) {
+                            window.location.href = data.url;
+                        } else {
+                            alert(`Erreur : ${data.error || 'Impossible d’initialiser le paiement.'}`);
+                            target.disabled = false;
+                            target.innerText = originalText;
+                        }
+                    } catch (err) {
+                        console.error('Erreur réseau :', err);
+                        alert('Erreur réseau lors de la communication.');
+                        target.disabled = false;
+                        target.innerText = originalText;
+                    }
+                });
+            });
+        }
+
+        initCheckout();
+        document.addEventListener('astro:page-load', initCheckout);
+    </script>
+</Layout>

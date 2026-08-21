@@ -4,33 +4,11 @@ export const headerData = {
   links: [
     {
       text: 'Home',
-      href: getPermalink('/')
-     // links: [
-      //   {
-      //     text: 'SaaS',
-      //     href: getPermalink('/homes/saas'),
-      //   },
-      //   {
-      //     text: 'Startup',
-       //    href: getPermalink('/homes/startup'),
-       //  },
-       //  {
-       //    text: 'Mobile App',
-       //    href: getPermalink('/homes/mobile-app'),
-      //   },
-       //  {
-         //  text: 'Personal',
-       //    href: getPermalink('/homes/personal'),
-      //   },
-     //  ],
+      href: getPermalink('/'),
     },
     {
       text: 'Pages',
       links: [
-        {
-          text: 'Features (Anchor Link)',
-          href: getPermalink('/#features'),
-        },
         {
           text: 'Services',
           href: getPermalink('/services'),
@@ -46,14 +24,6 @@ export const headerData = {
         {
           text: 'Contact',
           href: getPermalink('/contact'),
-        },
-        {
-          text: 'Terms',
-          href: getPermalink('/terms'),
-        },
-        {
-          text: 'Privacy policy',
-          href: getPermalink('/privacy'),
         },
       ],
     },
@@ -112,11 +82,17 @@ export const headerData = {
       ],
     },
     {
-      text: 'Widgets',
-      href: '#',
+      text: 'Catalogue',
+      href: getPermalink('/catalog'),
     },
   ],
-  actions: [{ text: 'Download', href: 'https://github.com/arthelokyo/astrowind', target: '_blank' }],
+  actions: [
+    {
+      text: 'Boutique',
+      href: getPermalink('/catalog'),
+      variant: 'primary',
+    },
+  ],
 };
 
 export const footerData = {
@@ -129,7 +105,7 @@ export const footerData = {
         { text: 'Team', href: '#' },
         { text: 'Enterprise', href: '#' },
         { text: 'Customer stories', href: '#' },
-        { text: 'Pricing', href: '#' },
+        { text: 'Pricing', href: getPermalink('/pricing') },
         { text: 'Resources', href: '#' },
       ],
     },
@@ -156,13 +132,13 @@ export const footerData = {
     {
       title: 'Company',
       links: [
-        { text: 'About', href: '#' },
-        { text: 'Blog', href: '#' },
+        { text: 'About', href: getPermalink('/about') },
+        { text: 'Blog', href: getBlogPermalink() },
         { text: 'Careers', href: '#' },
         { text: 'Press', href: '#' },
         { text: 'Inclusion', href: '#' },
         { text: 'Social Impact', href: '#' },
-        { text: 'Shop', href: '#' },
+        { text: 'Shop', href: getPermalink('/catalog') },
       ],
     },
   ],
@@ -171,13 +147,11 @@ export const footerData = {
     { text: 'Privacy Policy', href: getPermalink('/privacy') },
   ],
   socialLinks: [
-
     { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: '#' },
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/mariamsanoko/formationia' },
   ],
   footNote: `
-  
-    Made by <a class="text-blue-600 underline dark:text-muted" href="https://github.com/mariamsanoko"> mariamsanoko</a> · All rights reserved 2025.
+    Made by <a class="text-blue-600 underline dark:text-muted" href="https://github.com/mariamsanoko">mariamsanoko</a> · All rights reserved 2025.
   `,
 };
