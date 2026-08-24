@@ -1,7 +1,10 @@
 import type { APIRoute } from "astro";
-import { supabase } from "../../../lib/supabaseClient";
+import { getSupabaseClient } from "../../../lib/supabaseClient";
 
 export const POST: APIRoute = async ({ request, redirect }) => {
+  // On initialise Supabase au bon moment
+  const supabase = getSupabaseClient();
+
   const formData = await request.formData();
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
