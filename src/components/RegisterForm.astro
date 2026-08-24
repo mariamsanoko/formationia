@@ -5,7 +5,13 @@
 </form>
 
 <script>
-  import { supabase } from '~/lib/supabaseClient';
+  import { createClient } from '@supabase/supabase-js';
+
+  // Côté client, on utilise les variables d'environnement publiques d'Astro
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+  const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
+
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
   const form = document.querySelector<HTMLFormElement>('#register-form');
 
