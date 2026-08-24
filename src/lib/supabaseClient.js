@@ -18,3 +18,6 @@ export const getSupabaseClient = () => {
     }
     return supabaseInstance;
 };
+
+export class supabase {
+}
