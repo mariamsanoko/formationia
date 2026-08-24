@@ -1,0 +1,36 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+
+const metadata = {
+    title: 'Mon Tableau de Bord — MS I.A',
+};
+---
+
+<Layout metadata={metadata}>
+    <!-- Titre du tableau de bord -->
+    <HeroText
+            tagline="Espace Élève"
+            title="Mon Tableau de Bord"
+            subtitle="Bienvenue dans votre espace d'apprentissage. Voici les formations auxquelles vous avez accès :"
+    />
+
+    <!-- Liste des formations débloquées -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16 lg:pb-20">
+        <ul class="space-y-4">
+
+            <!-- Ligne Formation 1 -->
+            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-blue-50 dark:bg-slate-800 rounded-lg border border-blue-100 dark:border-slate-700 shadow-sm">
+                <span class="text-lg font-semibold text-gray-900 dark:text-white mb-2 sm:mb-0">Formation Power BI</span>
+                <span class="px-4 py-1.5 bg-primary text-white text-sm font-medium rounded-full">Accès débloqué</span>
+            </li>
+
+            <!-- Ligne Formation 2 -->
+            <li class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-blue-50 dark:bg-slate-800 rounded-lg border border-blue-100 dark:border-slate-700 shadow-sm">
+                <span class="text-lg font-semibold text-gray-900 dark:text-white mb-2 sm:mb-0">Formation Power Apps</span>
+                <span class="px-4 py-1.5 bg-primary text-white text-sm font-medium rounded-full">Accès débloqué</span>
+            </li>
+
+        </ul>
+    </section>
+</Layout>

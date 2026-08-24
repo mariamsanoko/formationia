@@ -1,9 +1,44 @@
 ---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import BuyButton from '../components/BuyButton.astro'; // Vérifiez que ce chemin est correct
 
-import BuyButton from "../components/BuyButton.astro";
+const metadata = {
+  title: 'Catalogue de Formations — MS I.A',
+  description: 'Découvrez nos programmes complets pour maîtriser l\'I.A et les outils No-Code.',
+};
 ---
-<h2>Catalogue Formations</h2>
-<ul>
-  <li>Formation Power BI <BuyButton /></li>
-  <li>Formation Power Apps <BuyButton /></li>
-</ul>
+
+<Layout metadata={metadata}>
+  <!-- Titre de la page -->
+  <HeroText
+      tagline="Catalogue"
+      title="Toutes nos Formations"
+      subtitle="Découvrez nos programmes complets pour maîtriser l'I.A et les outils Microsoft."
+  />
+
+  <!-- Grille des formations -->
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16 lg:pb-20">
+    <div class="grid gap-8 sm:grid-cols-2">
+
+      <!-- Carte Formation 1 -->
+      <div class="flex flex-col p-6 bg-white dark:bg-slate-900 rounded-lg shadow-[0_4px_30px_rgba(0,0,0,0.1)] border border-gray-200 dark:border-gray-700">
+        <h3 class="text-xl font-bold mb-2 dark:text-white">Formation Power BI</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6 flex-grow">Maîtrisez l'analyse de données et créez des tableaux de bord interactifs de A à Z.</p>
+        <div class="mt-auto">
+          <BuyButton />
+        </div>
+      </div>
+
+      <!-- Carte Formation 2 -->
+      <div class="flex flex-col p-6 bg-white dark:bg-slate-900 rounded-lg shadow-[0_4px_30px_rgba(0,0,0,0.1)] border border-gray-200 dark:border-gray-700">
+        <h3 class="text-xl font-bold mb-2 dark:text-white">Formation Power Apps</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6 flex-grow">Créez des applications métiers sur mesure sans taper une seule ligne de code.</p>
+        <div class="mt-auto">
+          <BuyButton />
+        </div>
+      </div>
+
+    </div>
+  </section>
+</Layout>
