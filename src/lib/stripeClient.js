@@ -6,4 +6,6 @@ if (!stripeSecretKey) {
   console.warn("Attention : La variable STRIPE_SECRET_KEY est manquante dans l'environnement.");
 }
 
-export const stripeClient = new Stripe(stripeSecretKey || '');
+export const stripeClient = new Stripe(stripeSecretKey || '', {
+  httpClient: Stripe.createFetchHttpClient(),
+});
