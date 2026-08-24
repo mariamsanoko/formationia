@@ -1,6 +1,7 @@
 export const prerender = false;
 
-import { stripeClient } from '~/lib/stripeClient.js';
+// 1. On importe la fonction d'initialisation différée
+import { getStripeClient } from '~/lib/stripeClient.js';
 
 export async function GET({ redirect }) {
     return redirect('/pricing', 302);
@@ -8,14 +9,12 @@ export async function GET({ redirect }) {
 
 export async function POST({ request }) {
     try {
+        // 2. On instancie Stripe uniquement quand la route est appelée
+        const stripeClient = getStripeClient();
+
         const data = await request.json();
         const priceId = data.priceId;
         const mode = data.mode || 'payment';
-
-        console.log('--- DEBUG STRIPE ---');
-        console.log('Price ID reçu :', priceId);
-        console.log('Mode reçu :', mode);
-        console.log('Clé Stripe présente :', !!import.meta.env.STRIPE_SECRET_KEY);
 
         if (!priceId) {
             return new Response(JSON.stringify({ error: 'Le champ priceId est requis.' }), {
@@ -43,10 +42,7 @@ export async function POST({ request }) {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
-        // Affiche l'erreur Stripe complète et brute dans votre terminal
-        console.error('=== ERREUR STRIPE EXACTE ===');
-        console.error(error);
-        console.error('===========================');
+        console.error('Stripe checkout error:', error);
 
         return new Response(JSON.stringify({ error: error.message }), {
             status: 500,
