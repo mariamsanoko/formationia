@@ -1,9 +1,10 @@
 export const prerender = false;
 
-import { stripeClient } from '../../lib/stripeClient.js';
+import { getStripeClient } from '~/lib/stripeClient.js';
 // Importez votre client de base de données ici si besoin (ex: Prisma, Supabase, etc.)
 
 export async function POST({ request }) {
+    const stripeClient = getStripeClient();
     const signature = request.headers.get('stripe-signature');
     const webhookSecret = import.meta.env.STRIPE_WEBHOOK_SECRET; // À ajouter dans vos variables d'environnement (.env)
 
