@@ -2,7 +2,8 @@
 export const prerender = false;
 
 import Layout from '~/layouts/PageLayout.astro';
-import { stripeClient } from '../lib/stripeClient.js';
+import { getStripeClient } from '~/lib/stripeClient.js';
+const stripeClient = getStripeClient();
 
 const metadata = {
     title: 'Commande Confirmée — Vos Accès',
