@@ -93,10 +93,8 @@ export default defineConfig({
   },
 
   // CORRECTION ICI : On configure l'adaptateur Cloudflare pour le mode serveur pur
-  adapter: cloudflare({
-    imageService: 'passthrough',
-    platformProxy: {
-      enabled: true,
-    },
+ adapter: cloudflare({
+     imageService: 'passthrough',
+
   }),
 });
