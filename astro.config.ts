@@ -2,7 +2,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { defineConfig } from 'astro/config';
-import node from '@astrojs/node';
 
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
@@ -93,5 +92,11 @@ export default defineConfig({
     },
   },
 
-  adapter: cloudflare(),
+  // CORRECTION ICI : On configure l'adaptateur Cloudflare pour le mode serveur pur
+  adapter: cloudflare({
+    imageService: 'passthrough',
+    platformProxy: {
+      enabled: true,
+    },
+  }),
 });
