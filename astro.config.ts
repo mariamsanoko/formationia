@@ -26,7 +26,7 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
 export default defineConfig({
   site: 'https://www.mariamsanoko.fr',
   base: '/',
-  output: 'server',
+  output: 'static',
 
   integrations: [
     tailwind({
