@@ -21,12 +21,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const hasExternalScripts = false;
 const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroIntegration)[] = []) =>
-  hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
+    hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
   site: 'https://www.mariamsanoko.fr',
   base: '/',
-  output: 'static',
+  output: 'server',
 
   integrations: [
     tailwind({
@@ -52,9 +52,9 @@ export default defineConfig({
     }),
 
     ...whenExternalScripts(() =>
-      partytown({
-        config: { forward: ['dataLayer.push'] },
-      })
+        partytown({
+          config: { forward: ['dataLayer.push'] },
+        })
     ),
 
     compress({
@@ -90,11 +90,14 @@ export default defineConfig({
         '~': path.resolve(__dirname, './src'),
       },
     },
+    // 👇 C'est ici que j'ai ajouté l'exclusion pour Vite ! 👇
+    optimizeDeps: {
+      exclude: ['astro/assets/services/noop'],
+    },
   },
 
   // CORRECTION ICI : On configure l'adaptateur Cloudflare pour le mode serveur pur
- adapter: cloudflare({
-     imageService: 'passthrough',
-
+  adapter: cloudflare({
+    imageService: 'passthrough',
   }),
 });

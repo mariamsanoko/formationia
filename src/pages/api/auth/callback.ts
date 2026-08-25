@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getSupabaseClient } from "../../../lib/supabaseClient";
+import { getSupabaseClient } from "~/lib/supabaseClient";
 
 export const GET: APIRoute = async ({ request, redirect }) => {
     const url = new URL(request.url);
