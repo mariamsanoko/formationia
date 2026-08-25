@@ -1,11 +1,7 @@
-export const prerender = false;
+// export const prerender = false;
 
 // 1. On importe la fonction d'initialisation différée
 import { getStripeClient } from '~/lib/stripeClient.js';
-
-export async function GET({ redirect }) {
-    return redirect('/pricing', 302);
-}
 
 export async function POST({ request }) {
     try {
