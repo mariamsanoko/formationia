@@ -1,23 +1,17 @@
-import type { APIRoute } from "astro";
-import { getSupabaseClient } from "../../../lib/supabaseClient";
+---
+import Layout from '~/layouts/PageLayout.astro';
+import RegisterForm from '~/components/RegisterForm.astro';
 
-export const POST: APIRoute = async ({ request, redirect }) => {
-    // On initialise Supabase au moment où la route est appelée (Lazy loading)
-  const supabase = getSupabaseClient();
-
-    const formData = await request.formData();
-    const email = formData.get("email")?.toString();
-    const password = formData.get("password")?.toString();
-
-    if (!email || !password) {
-    return new Response("Email et mot de passe requis.", { status: 400 });
-    }
-
-    const { error } = await supabase.auth.signUp({ email, password });
-
-    if (error) {
-    return new Response(error.message, { status: 400 });
-    }
-
-    return redirect("/dashboard");
-    };
+const metadata = {
+    title: 'Inscription — MS I.A & No Code',
+    ignoreTitleTemplate: true,
+};
+---
+<Layout metadata={metadata}>
+    <section class="max-w-xl mx-auto px-4 sm:px-6 py-12 lg:py-20">
+        <div class="bg-white dark:bg-slate-900 p-8 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+            <h1 class="text-2xl font-bold mb-6 text-center dark:text-white">Créer un compte</h1>
+            <RegisterForm />
+        </div>
+    </section>
+</Layout>
